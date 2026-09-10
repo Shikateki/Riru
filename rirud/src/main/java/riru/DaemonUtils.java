@@ -104,6 +104,9 @@ public class DaemonUtils {
         }
 
         File magiskDir = new File(DaemonUtils.getMagiskTmpfsPath(), ".magisk/modules/riru-core");
+        if (!magiskDir.isDirectory()) {
+            magiskDir = new File("/data/adb/modules/riru-core");
+        }
 
         if (has64Bit()) {
             fileContext &= checkOrResetContextForChildren(new File(magiskDir, "lib64"));
@@ -541,7 +544,11 @@ public class DaemonUtils {
         Map<String, List<Pair<String, String>>> m = new ConcurrentHashMap<>();
 
         String riruLibPath = "riru/" + (is64 ? "lib64" : "lib");
-        File[] magiskDirs = new File(DaemonUtils.getMagiskTmpfsPath(), ".magisk/modules").listFiles();
+        File modulesDir = new File(DaemonUtils.getMagiskTmpfsPath(), ".magisk/modules");
+        if (!modulesDir.isDirectory()) {
+            modulesDir = new File("/data/adb/modules");
+        }
+        File[] magiskDirs = modulesDir.listFiles();
         if (magiskDirs == null) {
             return Collections.emptyMap();
         }
