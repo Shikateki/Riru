@@ -82,7 +82,7 @@ __used __attribute__((constructor)) void Constructor() {
     riru_path += "/libriru.so";
 
     if (access(riru_path.data(), R_OK) != 0) {
-        riru_path.clear();
+        riru_path.size(0);
         riru_path += "/data/adb/modules/riru-core/lib";
 #ifdef __LP64__
         riru_path += "64";
