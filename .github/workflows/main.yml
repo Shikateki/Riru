@@ -18,4 +18,14 @@ jobs:
           distribution: temurin
           cache: gradle
       - name: Build
-        run: ./gradlew zipDebug zipRelease
+        run: ./gradlew :riru:zipDebug :riru:zipRelease
+      - name: Upload debug artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: riru-debug
+          path: out/*debug*.zip
+      - name: Upload release artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: riru-release
+          path: out/*release*.zip
