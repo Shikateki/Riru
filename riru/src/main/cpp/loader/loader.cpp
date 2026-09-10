@@ -81,6 +81,16 @@ __used __attribute__((constructor)) void Constructor() {
 #endif
     riru_path += "/libriru.so";
 
+    if (access(riru_path.data(), R_OK) != 0) {
+        riru_path.clear();
+        riru_path += "/data/adb/modules/riru-core/lib";
+#ifdef __LP64__
+        riru_path += "64";
+#endif
+        riru_path += "/libriru.so";
+        LOGI("fallback Riru library path: %s", riru_path.data());
+    }
+
     auto *handle = DlopenExt(riru_path, 0);
     if (handle) {
         auto init = reinterpret_cast<void (*)(void *, const char *, const RirudSocket &)>(dlsym(
